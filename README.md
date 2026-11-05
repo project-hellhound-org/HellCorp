@@ -1,6 +1,8 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/project-hellhound-org/HellCorp/main/Image/Banner.png" alt="HellCorp Banner" width="100%">
+</p>
 # HELLcorp Global Enterprise (HGE)
 ### Enterprise Management Console | Advanced Web Application Security Research Lab
-
 <p align="center">
   <img src="https://img.shields.io/badge/PROJECT-HELLCORP-c0392b?style=for-the-badge" />
   <img src="https://img.shields.io/badge/SECURITY-RESEARCH-black?style=for-the-badge" />
