@@ -1,0 +1,7 @@
+FROM node:20-alpine
+WORKDIR /app
+# Layer cache bust: 2026-06-14-15-46
+COPY s3-server.js ./
+RUN npm init -y && npm install express
+EXPOSE 9000
+CMD ["node", "s3-server.js"]

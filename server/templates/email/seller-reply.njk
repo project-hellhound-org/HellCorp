@@ -1,0 +1,43 @@
+{# Seller Auto-Reply Email Template #}
+{# Used when a seller sends a follow-up to a buyer after purchase #}
+{# VULNERABLE: Variables rendered without escaping (autoescape=false) #}
+
+<div style="background:#0a0a0a;color:#f0ece4;padding:40px;font-family:'Courier New',monospace;max-width:600px;margin:0 auto;">
+  <div style="border-bottom:2px solid #ff1a1a;padding-bottom:20px;margin-bottom:20px;">
+    <h1 style="color:#ff1a1a;font-size:32px;margin:0;letter-spacing:.1em;">HELL<span style="color:#f0ece4;">CORP</span></h1>
+    <p style="color:#a09a90;font-size:11px;letter-spacing:.2em;margin:4px 0;">ENTERPRISE SOLUTIONS — ENCRYPTED DELIVERY</p>
+  </div>
+
+  <p style="color:#f0ece4;font-size:14px;">Hello {{ buyer_name }},</p>
+
+  <p style="color:#a09a90;font-size:13px;">
+    Your acquisition of <strong style="color:#ff1a1a;">{{ product_name }}</strong> has been processed.
+  </p>
+
+  <div style="background:#111;border-left:3px solid #ff1a1a;padding:16px;margin:20px 0;">
+    <p style="margin:0;font-size:12px;color:#666;">ORDER REFERENCE</p>
+    <p style="margin:4px 0;font-size:16px;color:#f0ece4;">{{ order_id }}</p>
+  </div>
+
+  {% if access_code %}
+  <div style="background:#111;border:1px solid #1a1a1a;padding:16px;margin:20px 0;">
+    <p style="margin:0;font-size:11px;color:#666;letter-spacing:.15em;">ACCESS CODE</p>
+    <code style="font-size:18px;color:#ff1a1a;display:block;margin-top:8px;">{{ access_code }}</code>
+  </div>
+  {% endif %}
+
+  <p style="color:#a09a90;font-size:12px;">
+    {{ custom_message }}
+  </p>
+
+  <div style="margin-top:40px;padding-top:20px;border-top:1px solid #1a1a1a;">
+    <p style="color:#333;font-size:10px;margin:0;">
+      This message was sent via HellCorp secure messaging.<br>
+      Seller: {{ seller_name }}<br>
+      Transaction verified through escrow.
+    </p>
+    <p style="color:#222;font-size:9px;margin-top:12px;">
+      HellCorp — Encrypted · Anonymous · Jurisdictionless
+    </p>
+  </div>
+</div>

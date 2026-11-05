@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HELLCORP — ENTERPRISE SOLUTIONS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#050505;
+  --ink:#0a0a0a;
+  --slab:#111;
+  --edge:#1a1a1a;
+  --red:#ff1a1a;
+  --red-dim:#7a0000;
+  --white:#f0ece4;
+  --off:#a09a90;
+  --yellow:#ffe600;
+  --font-brutal:'Bebas Neue',sans-serif;
+  --font-ui:'DM Mono',monospace;
+  --font-head:'Syne',sans-serif;
+}
+
+html{background:var(--void);color:var(--white);font-family:var(--font-ui);overflow-x:hidden;cursor:crosshair}
+
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;opacity:.45;mix-blend-mode:overlay
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px);
+  pointer-events:none;z-index:9998
+}
+
+@keyframes glitch-clip{
+  0%,100%{clip-path:inset(0 0 98% 0);transform:translate(-4px,0)}
+  10%{clip-path:inset(20% 0 60% 0);transform:translate(4px,0)}
+  20%{clip-path:inset(50% 0 30% 0);transform:translate(-2px,0)}
+  30%{clip-path:inset(80% 0 5% 0);transform:translate(3px,0)}
+  40%{clip-path:inset(10% 0 80% 0);transform:translate(-4px,0)}
+  50%{clip-path:inset(40% 0 40% 0);transform:translate(2px,0)}
+  60%{clip-path:inset(70% 0 15% 0);transform:translate(-3px,0)}
+  70%{clip-path:inset(5% 0 90% 0);transform:translate(4px,0)}
+  80%{clip-path:inset(60% 0 20% 0);transform:translate(-2px,0)}
+  90%{clip-path:inset(30% 0 55% 0);transform:translate(3px,0)}
+}
+@keyframes glitch-clip2{
+  0%,100%{clip-path:inset(95% 0 0 0);transform:translate(4px,0)}
+  10%{clip-path:inset(30% 0 50% 0);transform:translate(-3px,0)}
+  30%{clip-path:inset(60% 0 25% 0);transform:translate(2px,0)}
+  50%{clip-path:inset(15% 0 75% 0);transform:translate(-4px,0)}
+  70%{clip-path:inset(85% 0 8% 0);transform:translate(3px,0)}
+  90%{clip-path:inset(45% 0 40% 0);transform:translate(-2px,0)}
+}
+@keyframes flicker{0%,95%,100%{opacity:1}96%{opacity:.6}97%{opacity:1}98%{opacity:.4}99%{opacity:.9}}
+@keyframes slide-up{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes blink-bar{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(255,26,26,.4)}50%{box-shadow:0 0 0 8px rgba(255,26,26,0)}}
+@keyframes skew-glitch{
+  0%,88%,100%{transform:none}
+  90%{transform:skewX(2deg) scaleY(1.008)}
+  92%{transform:skewX(-1deg)}
+  94%{transform:skewX(.5deg) scaleX(1.003)}
+}
+@keyframes row-glitch{
+  0%,94%,100%{transform:none;opacity:1}
+  95%{transform:translateX(6px);opacity:.8}
+  96%{transform:translateX(-4px) scaleX(1.01)}
+  97%{transform:none}
+}
+
+.glitch-text{position:relative;display:inline-block}
+.glitch-text::before,.glitch-text::after{
+  content:attr(data-t);position:absolute;inset:0;
+  font:inherit;color:inherit
+}
+.glitch-text::before{color:var(--red);animation:glitch-clip 4s infinite linear;mix-blend-mode:screen}
+.glitch-text::after{color:#0ff;animation:glitch-clip2 4s infinite linear .5s;mix-blend-mode:screen}
+
+/* ── LAYOUT ── */
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+/* ── TICKER ── */
+.ticker{background:var(--red);height:30px;display:flex;align-items:center;overflow:hidden;border-bottom:2px solid #000;flex-shrink:0}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker-scroll 22s linear infinite;font-family:var(--font-ui);font-size:10px;font-weight:500;letter-spacing:.12em;color:#000}
+.ticker-item{padding:0 52px}
+
+/* ── NAV ── */
+nav{
+  background:var(--ink);border-bottom:1px solid var(--edge);
+  padding:0 40px;display:flex;align-items:center;
+  justify-content:space-between;height:60px;
+  position:sticky;top:0;z-index:100;
+  animation:skew-glitch 10s infinite;flex-shrink:0
+}
+.nav-logo{font-family:var(--font-brutal);font-size:30px;letter-spacing:.04em;color:var(--white);line-height:1;position:relative}
+.nav-logo em{color:var(--red);font-style:normal}
+.nav-logo small{font-family:var(--font-ui);font-size:8px;letter-spacing:.3em;color:var(--off);display:block;margin-top:-3px}
+.nav-links{display:flex;gap:0;align-items:center}
+.nav-link{
+  font-family:var(--font-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--off);padding:0 18px;height:60px;display:flex;align-items:center;
+  border-left:1px solid var(--edge);cursor:pointer;transition:color .12s,background .12s;text-decoration:none
+}
+.nav-link:hover,.nav-link.active{color:var(--white);background:rgba(255,255,255,.03)}
+.nav-link.danger{color:var(--red-dim)}
+.nav-link.danger:hover{color:var(--red);background:rgba(255,26,26,.05)}
+.nav-r{display:flex;align-items:center;gap:12px;font-size:10px;color:var(--off);letter-spacing:.1em}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:flicker 2.5s infinite;flex-shrink:0}
+.tier-badge{
+  font-size:8px;letter-spacing:.2em;color:var(--red);
+  border:1px solid rgba(255,26,26,.35);padding:3px 8px;text-transform:uppercase
+}
+
+/* ── HERO ── */
+.hero{
+  padding:72px 40px 56px;border-bottom:1px solid var(--edge);
+  position:relative;overflow:hidden;background:var(--ink);flex-shrink:0
+}
+.hero-bg{
+  position:absolute;top:-40px;right:-20px;
+  font-family:var(--font-brutal);font-size:320px;
+  color:rgba(255,26,26,.025);line-height:1;pointer-events:none;user-select:none
+}
+.hero-eyebrow{
+  font-family:var(--font-ui);font-size:10px;letter-spacing:.35em;
+  color:var(--red);text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:12px
+}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--red)}
+.hero-h1{
+  font-family:var(--font-brutal);
+  font-size:clamp(68px,8.5vw,132px);
+  line-height:.88;letter-spacing:-.01em;color:var(--white);margin-bottom:6px
+}
+.hero-h1 .r{color:var(--red)}
+.hero-sub{
+  font-family:var(--font-ui);font-size:12px;color:var(--off);
+  letter-spacing:.06em;max-width:460px;line-height:1.85;
+  margin:18px 0 36px
+}
+.btn{
+  font-family:var(--font-ui);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  padding:13px 26px;cursor:pointer;transition:all .13s;border:none;
+  display:inline-flex;align-items:center;gap:8px
+}
+.btn-r{background:var(--red);color:#000;font-weight:500}
+.btn-r:hover{background:#ff3333;transform:translateY(-1px)}
+.btn-g{background:transparent;color:var(--white);border:1px solid var(--edge)}
+.btn-g:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.03)}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:0;margin-top:52px;border-top:1px solid var(--edge)}
+.hs{flex:1;padding:22px 0 0;border-right:1px solid var(--edge)}
+.hs:last-child{border-right:none}
+.hs:not(:first-child){padding-left:36px}
+.hs-v{font-family:var(--font-brutal);font-size:40px;color:var(--white);line-height:1}
+.hs-v em{color:var(--red);font-style:normal}
+.hs-l{font-size:9px;color:var(--off);letter-spacing:.18em;text-transform:uppercase;margin-top:3px}
+
+/* ── BODY GRID ── */
+.body-grid{display:flex;flex:1;min-height:0}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:210px;background:var(--ink);border-right:1px solid var(--edge);
+  padding:28px 0;flex-shrink:0;position:sticky;
+  top:60px;height:calc(100vh - 60px);overflow-y:auto
+}
+.sidebar::-webkit-scrollbar{width:2px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--edge)}
+.sb-section{margin-bottom:28px}
+.sb-label{font-size:8px;letter-spacing:.35em;color:var(--red);text-transform:uppercase;padding:0 22px;margin-bottom:6px}
+.sb-item{
+  display:flex;align-items:center;gap:9px;padding:8px 22px;
+  font-size:10px;letter-spacing:.08em;color:var(--off);cursor:pointer;
+  transition:all .1s;border-left:2px solid transparent
+}
+.sb-item:hover{color:var(--white);background:rgba(255,255,255,.025)}
+.sb-item.active{color:var(--white);border-left-color:var(--red);background:rgba(255,26,26,.04)}
+.sb-ico{
+  width:13px;height:13px;border:1px solid currentColor;
+  display:flex;align-items:center;justify-content:center;
+  font-size:6px;flex-shrink:0
+}
+.sb-count{
+  margin-left:auto;background:var(--edge);font-size:8px;
+  padding:2px 5px;color:var(--off)
+}
+.sb-item.active .sb-count{background:var(--red);color:#000}
+
+/* ── CONTENT ── */
+.content{flex:1;padding:36px;overflow-y:auto;min-width:0}
+
+/* ── STATUS STRIP ── */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px}
+.stat-tile{background:var(--slab);padding:18px 22px;border-left:3px solid transparent;transition:border-color .2s}
+.stat-tile:hover{border-left-color:var(--red)}
+.stat-v{font-family:var(--font-brutal);font-size:34px;color:var(--white);line-height:1}
+.stat-l{font-size:8px;color:var(--off);letter-spacing:.22em;text-transform:uppercase;margin-top:3px}
+.stat-d{font-size:9px;color:var(--red);margin-top:1px}
+
+/* ── DIVIDER ── */
+.div-line{height:1px;background:var(--edge);margin:24px 0}
+
+/* ── SEARCH ── */
+.search-row{display:flex;gap:2px;margin-bottom:24px}
+.search-input{
+  flex:1;background:var(--slab);border:1px solid var(--edge);border-right:none;
+  color:var(--white);font-family:var(--font-ui);font-size:11px;
+  padding:11px 14px;letter-spacing:.05em;outline:none;transition:border-color .12s
+}
+.search-input:focus{border-color:var(--red)}
+.search-input::placeholder{color:rgba(160,154,144,.35)}
+.search-btn{
+  background:var(--red);color:#000;border:none;font-family:var(--font-ui);
+  font-size:9px;letter-spacing:.22em;padding:0 22px;cursor:pointer;
+  text-transform:uppercase;transition:background .12s
+}
+.search-btn:hover{background:#ff3333}
+.flt-btn{
+  background:var(--slab);border:1px solid var(--edge);color:var(--off);
+  font-family:var(--font-ui);font-size:9px;letter-spacing:.18em;
+  padding:0 14px;cursor:pointer;transition:all .1s;text-transform:uppercase
+}
+.flt-btn:hover,.flt-btn.on{border-color:rgba(255,255,255,.3);color:var(--white);background:rgba(255,255,255,.04)}
+
+/* ── SECTION HEAD ── */
+.section-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--edge)
+}
+.section-title{font-family:var(--font-brutal);font-size:44px;line-height:1;color:var(--white)}
+.section-title em{color:var(--red);font-style:normal}
+.section-meta{font-size:9px;color:var(--off);letter-spacing:.14em;text-align:right;line-height:1.8}
+
+/* ── PRODUCT GRID ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:2px}
+
+/* ── CARD ── */
+.card{
+  background:var(--slab);padding:24px;position:relative;
+  overflow:hidden;cursor:pointer;transition:background .12s;
+  border:1px solid transparent;animation:slide-up .35s ease both
+}
+.card:hover{background:var(--edge);border-color:rgba(255,26,26,.12)}
+.card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,26,26,.05) 0%,transparent 55%);
+  opacity:0;transition:opacity .18s
+}
+.card:hover::before{opacity:1}
+.card-tag{
+  display:inline-flex;align-items:center;
+  font-size:7px;letter-spacing:.22em;text-transform:uppercase;
+  color:#000;background:var(--red);padding:3px 7px;margin-bottom:14px;font-weight:500
+}
+.card-tag.tb{background:#444;color:var(--off)}
+.card-tag.ts{background:var(--yellow);color:#000}
+.card-n{
+  font-family:var(--font-brutal);font-size:20px;color:var(--white);
+  line-height:1.05;margin-bottom:9px;letter-spacing:.02em
+}
+.card-d{
+  font-size:10px;color:var(--off);line-height:1.75;margin-bottom:18px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+}
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--edge);padding-top:14px
+}
+.card-price{font-family:var(--font-brutal);font-size:24px;color:var(--white);line-height:1}
+.card-price em{font-style:normal;color:var(--red);font-size:13px;margin-right:1px}
+.card-btns{display:flex;gap:5px}
+.cbtn{
+  width:30px;height:30px;background:var(--edge);border:none;
+  color:var(--off);font-size:13px;cursor:pointer;
+  transition:all .1s;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-ui)
+}
+.cbtn:hover{background:var(--red);color:#000}
+.card-gline{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .18s
+}
+.card:hover .card-gline{transform:scaleX(1)}
+.card-num{
+  position:absolute;top:14px;right:14px;font-family:var(--font-brutal);
+  font-size:44px;color:rgba(255,255,255,.025);line-height:1;pointer-events:none
+}
+
+/* ── TERMINAL ── */
+.terminal-wrap{margin-top:28px;display:none}
+.terminal{
+  background:#000;border:1px solid var(--edge);padding:18px 22px;
+  font-family:var(--font-ui);font-size:10px;color:rgba(160,154,144,.55);
+  line-height:2;position:relative
+}
+.terminal::before{content:'● ● ●';position:absolute;top:8px;left:14px;font-size:7px;color:var(--edge);letter-spacing:4px}
+.t-body{margin-top:12px}
+.t-cmd{color:var(--red)}
+.t-ok{color:#3a8}
+.t-cur{
+  display:inline-block;width:7px;height:11px;background:var(--white);
+  vertical-align:middle;animation:blink-bar 1s step-end infinite;margin-left:2px
+}
+
+/* ── MODAL ── */
+.modal-ov{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);
+  z-index:1000;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .18s
+}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--slab);border:1px solid var(--edge);
+  width:540px;max-width:95vw;max-height:90vh;overflow-y:auto;
+  animation:slide-up .22s ease
+}
+.modal-head{
+  padding:26px 30px 18px;border-bottom:1px solid var(--edge);
+  display:flex;justify-content:space-between;align-items:flex-start
+}
+.modal-title{font-family:var(--font-brutal);font-size:30px;color:var(--white);line-height:1}
+.modal-x{
+  background:none;border:1px solid var(--edge);color:var(--off);
+  width:30px;height:30px;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0
+}
+.modal-x:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:26px 30px}
+.modal-price{font-family:var(--font-brutal);font-size:52px;color:var(--white);line-height:1;margin-bottom:3px}
+.modal-price em{color:var(--red);font-style:normal;font-size:26px}
+.modal-desc{font-size:11px;color:var(--off);line-height:1.85;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--edge)}
+.modal-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+.spec{background:var(--ink);padding:11px 14px}
+.spec-l{font-size:8px;color:var(--off);letter-spacing:.22em;text-transform:uppercase}
+.spec-v{font-size:11px;color:var(--white);margin-top:3px}
+.modal-buy{
+  width:100%;padding:15px;background:var(--red);border:none;
+  color:#000;font-family:var(--font-brutal);font-size:18px;
+  letter-spacing:.1em;cursor:pointer;transition:all .13s;animation:pulse-red 2.5s infinite
+}
+.modal-buy:hover{background:#ff3333;transform:translateY(-1px)}
+.modal-note{margin-top:12px;font-size:9px;color:rgba(160,154,144,.35);text-align:center;letter-spacing:.1em}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--ink);border-top:1px solid var(--edge);
+  padding:18px 40px;display:flex;align-items:center;
+  justify-content:space-between;font-size:9px;color:var(--off);
+  letter-spacing:.12em;flex-shrink:0
+}
+.footer-logo{font-family:var(--font-brutal);font-size:16px;color:rgba(255,255,255,.18)}
+.footer-logo em{color:rgba(255,26,26,.35);font-style:normal}
+
+@media(max-width:860px){
+  .sidebar{display:none}
+  .hero-h1{font-size:58px}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .hero-stats{flex-wrap:wrap}
+  .hs{min-width:50%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">⬛ HELLCORP SYSTEMS — GLOBAL OPS NOMINAL</span>
+      <span class="ticker-item">⬛ NEW: ENTERPRISE ZERO-DAY BUNDLE — ₿ 12.4</span>
+      <span class="ticker-item">⬛ VOLUME: $4.2M / 24H — RECORD HIGH</span>
+      <span class="ticker-item">⬛ TIER-S SLOTS OPEN: 3 REMAINING</span>
+      <span class="ticker-item">⬛ LATTICE-128 ENCRYPTION — ALL CHANNELS SECURE</span>
+      <span class="ticker-item">⬛ NODES: 14,892 ACTIVE — UPTIME: 99.97%</span>
+      <span class="ticker-item">⬛ HELLCORP SYSTEMS — GLOBAL OPS NOMINAL</span>
+      <span class="ticker-item">⬛ NEW: ENTERPRISE ZERO-DAY BUNDLE — ₿ 12.4</span>
+      <span class="ticker-item">⬛ VOLUME: $4.2M / 24H — RECORD HIGH</span>
+      <span class="ticker-item">⬛ TIER-S SLOTS OPEN: 3 REMAINING</span>
+      <span class="ticker-item">⬛ LATTICE-128 ENCRYPTION — ALL CHANNELS SECURE</span>
+      <span class="ticker-item">⬛ NODES: 14,892 ACTIVE — UPTIME: 99.97%</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      HELL<em>CORP</em>
+      <small>ENTERPRISE THREAT SOLUTIONS — EST. 2019</small>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link active" href="#">CATALOG</a>
+      <a class="nav-link" href="#">SERVICES</a>
+      <a class="nav-link" href="#">ESCROW</a>
+      <a class="nav-link" href="#">FORUM</a>
+      <a class="nav-link danger" href="#">ADMIN</a>
+    </div>
+    <div class="nav-r">
+      <div class="dot"></div>
+      OPERATOR: <strong style="color:var(--white);margin-left:4px">GHOSTROOT</strong>
+      <div class="tier-badge">⬛ TIER-S</div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">HC</div>
+    <div class="hero-eyebrow">HELLCORP MARKETPLACE v3.1</div>
+    <div class="hero-h1">
+      <div class="glitch-text" data-t="ENTERPRISE">ENTERPRISE</div>
+      <div class="r">SOLUTIONS.</div>
+    </div>
+    <p class="hero-sub">
+      Precision-grade offensive tooling for qualified operators.
+      Zero paper trail. Cryptographically verified listings.
+      Non-negotiable operational security.
+    </p>
+    <div class="hero-cta">
+      <button class="btn btn-r" onclick="scrollToMarket()">⬛ BROWSE CATALOG</button>
+      <button class="btn btn-g" onclick="toggleTerminal()">SYSTEM TERMINAL</button>
+    </div>
+    <div class="hero-stats">
+      <div class="hs">
+        <div class="hs-v" id="c1">0</div>
+        <div class="hs-l">Active Listings</div>
+      </div>
+      <div class="hs">
+        <div class="hs-v">₿<em id="c2">0</em></div>
+        <div class="hs-l">Monthly Volume</div>
+      </div>
+      <div class="hs">
+        <div class="hs-v"><em id="c3">0</em>%</div>
+        <div class="hs-l">Uptime SLA</div>
+      </div>
+      <div class="hs">
+        <div class="hs-v"><em id="c4">0</em></div>
+        <div class="hs-l">Verified Operators</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <div class="body-grid" id="market">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-section">
+        <div class="sb-label">Categories</div>
+        <div class="sb-item active" onclick="filterCat('all',this)">
+          <div class="sb-ico">▪</div>All
+          <span class="sb-count">12</span>
+        </div>
+        <div class="sb-item" onclick="filterCat('exploit',this)">
+          <div class="sb-ico">⚡</div>Exploits
+          <span class="sb-count">3</span>
+        </div>
+        <div class="sb-item" onclick="filterCat('malware',this)">
+          <div class="sb-ico">☣</div>Malware
+          <span class="sb-count">3</span>
+        </div>
+        <div class="sb-item" onclick="filterCat('botnet',this)">
+          <div class="sb-ico">⬡</div>Botnets
+          <span class="sb-count">1</span>
+        </div>
+        <div class="sb-item" onclick="filterCat('credential',this)">
+          <div class="sb-ico">⊞</div>Credentials
+          <span class="sb-count">2</span>
+        </div>
+        <div class="sb-item" onclick="filterCat('tool',this)">
+          <div class="sb-ico">⊙</div>Tools
+          <span class="sb-count">3</span>
+        </div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-label">Tier Access</div>
+        <div class="sb-item">
+          <div class="sb-ico" style="color:var(--off)">B</div>Basic
+        </div>
+        <div class="sb-item active">
+          <div class="sb-ico" style="color:var(--red)">S</div>Sovereign
+          <span class="sb-count" style="background:var(--red);color:#000">✓</span>
+        </div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-label">Sort</div>
+        <div class="sb-item" onclick="sortP('price',this)">
+          <div class="sb-ico">↓</div>Price High→Low
+        </div>
+        <div class="sb-item" onclick="sortP('name',this)">
+          <div class="sb-ico">A</div>Alphabetical
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- STATS -->
+      <div class="stat-strip">
+        <div class="stat-tile">
+          <div class="stat-v" id="s1">—</div>
+          <div class="stat-l">Active Listings</div>
+          <div class="stat-d">↑ +3 this hour</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-v" id="s2">—</div>
+          <div class="stat-l">Transactions / 24h</div>
+          <div class="stat-d">↑ +147 since midnight</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-v" id="s3">—</div>
+          <div class="stat-l">Operators Online</div>
+          <div class="stat-d">↑ Peak: 312</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-v" id="s4">—</div>
+          <div class="stat-l">Network Nodes</div>
+          <div class="stat-d">↑ +89 this week</div>
+        </div>
+      </div>
+
+      <div class="div-line"></div>
+
+      <!-- SEARCH -->
+      <div class="search-row">
+        <input class="search-input" id="si" placeholder="SEARCH CATALOG — EXPLOITS, IMPLANTS, CREDENTIALS..." oninput="doSearch(this.value)"/>
+        <button class="search-btn">SCAN</button>
+        <button class="flt-btn on" id="fb-all" onclick="filterCat('all',null);setFltBtn(this)">ALL</button>
+        <button class="flt-btn" id="fb-exploit" onclick="filterCat('exploit',null);setFltBtn(this)">EXPLOITS</button>
+        <button class="flt-btn" id="fb-malware" onclick="filterCat('malware',null);setFltBtn(this)">MALWARE</button>
+        <button class="flt-btn" id="fb-tool" onclick="filterCat('tool',null);setFltBtn(this)">TOOLS</button>
+      </div>
+
+      <!-- SECTION HEAD -->
+      <div class="section-head">
+        <div class="section-title" id="sTitle">CATALOG <em>—</em> ALL</div>
+        <div class="section-meta" id="sMeta">12 LISTINGS<br>SORTED BY RELEVANCE</div>
+      </div>
+
+      <!-- GRID -->
+      <div class="pgrid" id="pgrid"></div>
+
+      <!-- TERMINAL -->
+      <div class="terminal-wrap" id="termWrap">
+        <div class="div-line"></div>
+        <div class="terminal">
+          <div class="t-body">
+            <div><span class="t-cmd">root@hellcorp:~#</span> systemctl status hellcorp</div>
+            <div><span class="t-ok">● hellcorp.service — Active (running) since 847 days</span></div>
+            <div><span class="t-cmd">root@hellcorp:~#</span> uptime</div>
+            <div>14:32:07 up 847 days, 3:14 — load avg: 0.02, 0.04, 0.01</div>
+            <div><span class="t-cmd">root@hellcorp:~#</span> df -h | grep /data</div>
+            <div>/dev/sda1 &nbsp;14T &nbsp;4.1T &nbsp;9.9T &nbsp;29% &nbsp;/data</div>
+            <div><span class="t-cmd">root@hellcorp:~#</span> netstat -an | grep LISTEN</div>
+            <div>tcp &nbsp;0.0.0.0:443 &nbsp;LISTEN — ssl/tls</div>
+            <div>tcp &nbsp;0.0.0.0:8443 LISTEN — operator panel</div>
+            <div><span class="t-cmd">root@hellcorp:~#</span><span class="t-cur"></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">HELL<em>CORP</em> © 2025</div>
+    <div>ENCRYPTED — ANONYMOUS — JURISDICTIONLESS</div>
+    <div style="display:flex;gap:20px">
+      <span>PGP VERIFIED</span>
+      <span style="color:var(--edge)">|</span>
+      <span>ESCROW PROTECTED</span>
+      <span style="color:var(--edge)">|</span>
+      <span>MONERO ACCEPTED</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="mov" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div style="font-size:8px;letter-spacing:.28em;color:var(--red);margin-bottom:5px" id="mTag">EXPLOIT</div>
+        <div class="modal-title" id="mTitle">—</div>
+      </div>
+      <button class="modal-x" onclick="closeMDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-price"><em>$</em><span id="mPrice">0</span></div>
+      <div style="font-size:9px;color:var(--off);letter-spacing:.12em;margin-bottom:18px" id="mId">ASSET ID: —</div>
+      <p class="modal-desc" id="mDesc"></p>
+      <div class="modal-specs" id="mSpecs"></div>
+      <button class="modal-buy" onclick="doPurchase()">ACQUIRE ASSET →</button>
+      <div class="modal-note">TRANSACTION IRREVERSIBLE — ESCROW HELD FOR 72H — MONERO ONLY</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PRODUCTS=[
+  {id:'HC-001',name:'Chrome V8 Type Confusion',cat:'exploit',tag:'TIER-S',price:24900,desc:'Full chain renderer-to-kernel RCE. Affects Chrome 118–124. Bypasses V8 sandbox, ASLR, and MitigationPolicy. Weaponized shellcode included with comprehensive documentation.',specs:{platform:'Windows / macOS',reliability:'94.2%',discovered:'2024-Q3',format:'C++ / Python'}},
+  {id:'HC-002',name:'Phantom Botnet Controller',cat:'botnet',tag:'TIER-S',price:8400,desc:'Encrypted C2 infrastructure with 40,000 active nodes. DDoS, spam, cryptomining, credential harvest modules. Self-healing mesh topology with automatic failover.',specs:{nodes:'40,000+',protocol:'Tor + WireGuard',panel:'React + WebRTC',geo:'Global'}},
+  {id:'HC-003',name:'ShadowCred Harvester',cat:'malware',tag:'TIER-A',price:1200,desc:'Silent credential stealer targeting 200+ applications. Browser cookies, saved passwords, 2FA seeds, crypto wallets. Fully undetected against all major AV solutions.',specs:{targets:'200+ apps',evasion:'Polymorphic',exfil:'HTTPS beacon',persist:'Registry + WMI'}},
+  {id:'HC-004',name:'MedusaPhish Enterprise',cat:'tool',tag:'TIER-B',price:499,desc:'Adversary-in-the-middle phishing platform. Pre-built kits for 300+ financial institutions. Real-time victim dashboard with automatic TLS provisioning.',specs:{templates:'300+',capture:'RT Dashboard',bypass:'Cloudflare / 2FA',deploy:'1-click Docker'}},
+  {id:'HC-005',name:'CVE-2024-4899 Weaponized',cat:'exploit',tag:'TIER-S',price:31000,desc:'Critical CVSS 9.8 RCE in enterprise VPN appliance. Pre-auth, zero interaction required. Compatible with latest firmware revisions. Full PoC + operational documentation.',specs:{cvss:'9.8 CRITICAL',affected:'VPN < 22.7R2',auth:'Pre-auth',payload:'x64 reverse shell'}},
+  {id:'HC-006',name:'Corporate Dump — APAC',cat:'credential',tag:'TIER-B',price:890,desc:'14.2M verified credentials from APAC Fortune 500 breach. Email:password combos, 38% unique across domains. Sorted by organization. Updated Q4 2024.',specs:{records:'14.2M',verified:'38%',domains:'1,847',format:'CSV + HLS3'}},
+  {id:'HC-007',name:'Kernel Implant v4',cat:'malware',tag:'TIER-S',price:18500,desc:'Ring-0 persistence implant for Windows 10–11. BYOVD technique. Survives full disk wipe. Invisible to EDR solutions. Hypervisor-aware, VM-escape capable.',specs:{target:'Win 10 / 11',persist:'Ring-0',edr:'Full Bypass',av:'0 / 72 detections'}},
+  {id:'HC-008',name:'WiFi Capture Suite',cat:'tool',tag:'TIER-B',price:149,desc:'WPA2/WPA3 handshake capture suite. PMKID attack, evil twin, deauth flood on 5GHz. Ships with Alfa AWUS036ACH compatible firmware and antenna drivers.',specs:{protocols:'WPA2 / WPA3',attack:'PMKID / Evil-Twin',range:'500m ext. antenna',format:'Python + C'}},
+  {id:'HC-009',name:'Exchange 0-Day — RCE',cat:'exploit',tag:'TIER-S',price:42000,desc:'Unpatched Microsoft Exchange RCE. Pre-auth SSRF chain to full remote code execution. Affects on-prem Exchange 2016–2019 latest CU. Operational and fully weaponized.',specs:{target:'Exchange 2016–2019',auth:'Pre-auth',chain:'SSRF → RCE',status:'No patch'}},
+  {id:'HC-010',name:'Dark Credential API',cat:'credential',tag:'TIER-A',price:2400,desc:'Programmatic access to 4.8B leaked credential database. Reverse hash lookup, domain pivot, email-to-password history. 99.9% uptime SLA with rate guarantees.',specs:{records:'4.8B',lookup:'Email / Hash / Domain',uptime:'99.9%',rate:'10k RPM'}},
+  {id:'HC-011',name:'PolyRansom Builder',cat:'malware',tag:'TIER-S',price:12000,desc:'Enterprise ransomware factory. AES-256 + RSA-4096 hybrid encryption with automated double extortion portal. Dark web payment processing with automatic Monero handling.',specs:{encryption:'AES-256 + RSA-4096',spread:'SMB worm + phish',payment:'XMR auto',portal:'Hosted .onion'}},
+  {id:'HC-012',name:'iOS Zero-Click Implant',cat:'malware',tag:'TIER-S',price:35000,desc:'Zero-click iOS 17 implant delivered via iMessage. Full device extraction: messages, location, camera, microphone, all app data. Kernel-level persistence across reboots.',specs:{delivery:'Zero-click iMessage',persist:'Kernel level',access:'Full device',mdm:'0 / 14 detected'}},
+];
+
+let activeCat='all',searchQ='';
+
+function counter(el,target,dur=1400){
+  const s=performance.now();
+  const u=t=>{
+    const p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(e*target).toLocaleString();
+    if(p<1)requestAnimationFrame(u);else el.textContent=target.toLocaleString();
+  };requestAnimationFrame(u);
+}
+
+window.addEventListener('load',()=>{
+  counter(document.getElementById('c1'),4291);
+  counter(document.getElementById('c2'),847,1100);
+  counter(document.getElementById('c3'),99,900);
+  counter(document.getElementById('c4'),2847,1600);
+  counter(document.getElementById('s1'),4291);
+  counter(document.getElementById('s2'),3420,1200);
+  counter(document.getElementById('s3'),289,1350);
+  counter(document.getElementById('s4'),14892,1800);
+});
+
+function tagClass(t){return t==='TIER-S'?'card-tag ts':t==='TIER-A'?'card-tag':'card-tag tb'}
+
+function render(list){
+  const g=document.getElementById('pgrid');
+  g.innerHTML=list.map((p,i)=>`
+    <div class="card" style="animation-delay:${i*.04}s" onclick="openM('${p.id}')">
+      <div class="card-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="${tagClass(p.tag)}">${p.tag} — ${p.cat.toUpperCase()}</div>
+      <div class="card-n">${p.name}</div>
+      <p class="card-d">${p.desc}</p>
+      <div class="card-foot">
+        <div class="card-price"><em>$</em>${p.price.toLocaleString()}</div>
+        <div class="card-btns">
+          <button class="cbtn" onclick="event.stopPropagation();openM('${p.id}')" title="Details">i</button>
+          <button class="cbtn" onclick="event.stopPropagation();toast('ADDED: ${p.name.slice(0,20)}')" title="Acquire">+</button>
+        </div>
+      </div>
+      <div class="card-gline"></div>
+    </div>
+  `).join('');
+  document.getElementById('sMeta').textContent=`${list.length} LISTINGS\nSORTED BY RELEVANCE`;
+}
+
+function applyFilters(){
+  let f=PRODUCTS;
+  if(activeCat!=='all') f=f.filter(p=>p.cat===activeCat);
+  if(searchQ) f=f.filter(p=>p.name.toLowerCase().includes(searchQ)||p.desc.toLowerCase().includes(searchQ));
+  render(f);
+}
+
+window.filterCat=function(cat,el){
+  activeCat=cat;
+  if(el){
+    document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+    el.classList.add('active');
+  }
+  document.getElementById('sTitle').innerHTML=`CATALOG <em>—</em> ${cat==='all'?'ALL':cat.toUpperCase()}`;
+  applyFilters();
+};
+
+window.setFltBtn=function(el){
+  document.querySelectorAll('.flt-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+};
+
+window.doSearch=function(v){searchQ=v.toLowerCase();applyFilters();};
+
+window.sortP=function(by,el){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const s=[...PRODUCTS];
+  if(by==='price') s.sort((a,b)=>b.price-a.price);
+  if(by==='name') s.sort((a,b)=>a.name.localeCompare(b.name));
+  render(s);
+};
+
+window.openM=function(id){
+  const p=PRODUCTS.find(x=>x.id===id);if(!p)return;
+  document.getElementById('mTag').textContent=`${p.tag} — ${p.cat.toUpperCase()}`;
+  document.getElementById('mTitle').textContent=p.name;
+  document.getElementById('mPrice').textContent=p.price.toLocaleString();
+  document.getElementById('mId').textContent=`ASSET ID: ${p.id} — ENCRYPTED LISTING`;
+  document.getElementById('mDesc').textContent=p.desc;
+  document.getElementById('mSpecs').innerHTML=Object.entries(p.specs).map(([k,v])=>`
+    <div class="spec">
+      <div class="spec-l">${k.replace(/_/g,' ')}</div>
+      <div class="spec-v">${v}</div>
+    </div>`).join('');
+  document.getElementById('mov').classList.add('open');
+};
+
+window.closeModal=function(e){if(e.target===document.getElementById('mov')) document.getElementById('mov').classList.remove('open');};
+window.closeMDirect=function(){document.getElementById('mov').classList.remove('open');};
+window.doPurchase=function(){document.getElementById('mov').classList.remove('open');toast('TRANSACTION INITIATED — ESCROW PENDING');};
+
+function toast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--slab);border:1px solid var(--red);color:var(--white);font-family:var(--font-ui);font-size:10px;letter-spacing:.18em;padding:13px 26px;z-index:2000;animation:slide-up .18s ease;white-space:nowrap';
+  t.textContent='⬛ '+msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+
+window.scrollToMarket=function(){document.getElementById('market').scrollIntoView({behavior:'smooth'});};
+window.toggleTerminal=function(){
+  const w=document.getElementById('termWrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+  if(w.style.display==='block') w.scrollIntoView({behavior:'smooth'});
+};
+
+// Subtle random glitch on cards
+setInterval(()=>{
+  const cards=document.querySelectorAll('.card');
+  if(!cards.length)return;
+  const c=cards[Math.floor(Math.random()*cards.length)];
+  c.style.transform=`skewX(${(Math.random()-.5)*1.5}deg)`;
+  c.style.filter='brightness(1.08)';
+  setTimeout(()=>{c.style.transform='';c.style.filter='';},75);
+},2800);
+
+render(PRODUCTS);
+</script>
+</body>
+</html>

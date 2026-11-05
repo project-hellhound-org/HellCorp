@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/css/hellcorp.css">
+  <title>HellCorp — Terms of Service</title>
+</head>
+<body>
+<div style="max-width:800px;margin:0 auto;padding:60px 24px;">
+  <h1 style="font-family:'Bebas Neue',sans-serif;color:#ff1a1a;font-size:48px;letter-spacing:.05em;">TERMS OF SERVICE</h1>
+  <p style="font-size:10px;color:#a09a90;letter-spacing:.3em;margin-bottom:40px;">LAST UPDATED: <!--#echo var="DATE_LOCAL" --></p>
+
+  <div style="color:#a09a90;font-size:13px;line-height:1.8;">
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">1. ACCEPTANCE OF TERMS</h2>
+    <p>By accessing HellCorp marketplace, you agree to be bound by these Terms of Service. All transactions are final. No refunds. No chargebacks. All sales conducted through escrow.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">2. USER ACCOUNTS</h2>
+    <p>You are responsible for maintaining the confidentiality of your account credentials. HellCorp is not liable for unauthorized access to your account. PGP-signed communications are recommended for sensitive transactions.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">3. PROHIBITED ACTIVITIES</h2>
+    <p>The following are prohibited: (a) law enforcement operations, (b) informant activities, (c) sharing access credentials, (d) attempting to deanonymize users, (e) chargebacks or payment fraud against the platform.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">4. ESCROW POLICY</h2>
+    <p>All transactions above $100 USD are processed through mandatory escrow. Funds are released to sellers after buyer confirmation or after 14 days of no dispute. Dispute resolution is handled by HellCorp arbitration.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">5. DIGITAL DELIVERY</h2>
+    <p>All products are digital assets delivered via encrypted channel. Delivery times vary by seller. Standard delivery within 24 hours of escrow confirmation.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">6. LIABILITY</h2>
+    <p>HellCorp operates as a marketplace platform only. We are not responsible for the content, quality, or legality of listed products. Use at your own risk.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">7. PRIVACY</h2>
+    <p>We collect minimal data. All communications are encouraged to use PGP encryption. Access logs are purged every 72 hours.</p>
+
+    <div style="margin-top:48px;padding-top:24px;border-top:1px solid #1a1a1a;">
+      <p style="color:#333;font-size:10px;">Server: <!--#echo var="SERVER_SOFTWARE" --> | Your IP: <!--#echo var="REMOTE_ADDR" --></p>
+      <p style="color:#222;font-size:9px;margin-top:4px;">Document generated at <!--#echo var="DATE_GMT" --></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

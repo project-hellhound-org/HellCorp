@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/css/hellcorp.css">
+  <title>HellCorp — About</title>
+</head>
+<body>
+<div style="max-width:800px;margin:0 auto;padding:60px 24px;text-align:center;">
+  <h1 style="font-family:'Bebas Neue',sans-serif;color:#ff1a1a;font-size:72px;letter-spacing:.05em;">HELL<span style="color:#f0ece4;">CORP</span></h1>
+  <p style="font-size:10px;color:#a09a90;letter-spacing:.5em;margin-bottom:48px;">ENTERPRISE SOLUTIONS FOR THE DISCERNING PROFESSIONAL</p>
+
+  <div style="color:#a09a90;font-size:13px;line-height:2;text-align:left;">
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">WHO WE ARE</h2>
+    <p>HellCorp is the premier underground marketplace for digital assets, security tools, exploit kits, and specialized software. Founded in 2019, we serve professionals who require access to advanced tools and resources not available through conventional channels.</p>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">OUR PLATFORM</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;">
+      <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:20px;">
+        <h3 style="color:#ff1a1a;font-family:'Bebas Neue',sans-serif;font-size:20px;">ESCROW</h3>
+        <p style="font-size:11px;">All transactions secured through our multi-signature escrow system. Dispute arbitration included.</p>
+      </div>
+      <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:20px;">
+        <h3 style="color:#ff1a1a;font-family:'Bebas Neue',sans-serif;font-size:20px;">ENCRYPTED</h3>
+        <p style="font-size:11px;">End-to-end AES-256 encryption for all communications. PGP keys accepted for enhanced security.</p>
+      </div>
+      <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:20px;">
+        <h3 style="color:#ff1a1a;font-family:'Bebas Neue',sans-serif;font-size:20px;">ANONYMOUS</h3>
+        <p style="font-size:11px;">Tor-compatible. Monero preferred. Minimal logging. No KYC. No IP tracking.</p>
+      </div>
+      <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:20px;">
+        <h3 style="color:#ff1a1a;font-family:'Bebas Neue',sans-serif;font-size:20px;">VERIFIED</h3>
+        <p style="font-size:11px;">All vendors are manually reviewed and verified. Quality ratings and buyer feedback system.</p>
+      </div>
+    </div>
+
+    <h2 style="color:#f0ece4;font-family:'Syne',sans-serif;font-size:18px;margin-top:32px;">SYSTEM INFORMATION</h2>
+    <div style="background:#0a0a0a;border-left:3px solid #ff1a1a;padding:16px;font-size:11px;margin-top:12px;">
+      <p>Server: <!--#echo var="SERVER_SOFTWARE" --></p>
+      <p>Date: <!--#echo var="DATE_LOCAL" --></p>
+      <p>Your IP: <!--#echo var="REMOTE_ADDR" --></p>
+      <p>Agent: <!--#echo var="HTTP_USER_AGENT" --></p>
+      <p>Page: <!--#echo var="DOCUMENT_URI" --></p>
+    </div>
+
+    <div style="margin-top:48px;padding-top:24px;border-top:1px solid #1a1a1a;text-align:center;">
+      <p style="color:#333;font-size:10px;">HellCorp — Encrypted · Anonymous · Jurisdictionless</p>
+      <p style="color:#222;font-size:9px;margin-top:4px;">PGP Fingerprint: 0xDE AD BE EF CA FE 13 37</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

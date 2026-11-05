@@ -1,0 +1,80 @@
+{# Invoice Template — HellCorp #}
+{# VULNERABLE: Address and buyer name fields from user profile rendered without escaping #}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { background:#050505; color:#f0ece4; font-family:'Courier New',monospace; padding:40px; }
+    .invoice { max-width:700px; margin:0 auto; border:1px solid #1a1a1a; }
+    .header { background:#0a0a0a; padding:30px; border-bottom:2px solid #ff1a1a; }
+    .body { padding:30px; }
+    .footer { background:#0a0a0a; padding:20px 30px; border-top:1px solid #1a1a1a; }
+    table { width:100%; border-collapse:collapse; margin:20px 0; }
+    th { text-align:left; padding:10px; border-bottom:1px solid #ff1a1a; color:#ff1a1a; font-size:10px; letter-spacing:.2em; }
+    td { padding:10px; border-bottom:1px solid #111; font-size:13px; }
+    .total { font-size:24px; color:#ff1a1a; font-weight:bold; }
+  </style>
+</head>
+<body>
+  <div class="invoice">
+    <div class="header">
+      <h1 style="color:#ff1a1a;font-size:36px;margin:0;">HELL<span style="color:#f0ece4;">CORP</span></h1>
+      <p style="color:#a09a90;font-size:10px;letter-spacing:.3em;">INVOICE — DIGITAL ASSET TRANSFER</p>
+      <p style="color:#666;font-size:11px;">Invoice #{{ invoice_id }}</p>
+      <p style="color:#666;font-size:11px;">Date: {{ date }}</p>
+    </div>
+
+    <div class="body">
+      <div style="display:flex;justify-content:space-between;margin-bottom:30px;">
+        <div>
+          <p style="color:#666;font-size:10px;letter-spacing:.2em;">BILL TO</p>
+          <p style="font-size:16px;margin:4px 0;">{{ buyer_name }}</p>
+          <p style="color:#a09a90;font-size:12px;">{{ address }}</p>
+          <p style="color:#a09a90;font-size:12px;">{{ buyer_email }}</p>
+        </div>
+        <div style="text-align:right;">
+          <p style="color:#666;font-size:10px;letter-spacing:.2em;">ORDER</p>
+          <p style="font-size:16px;margin:4px 0;color:#ff1a1a;">{{ order_id }}</p>
+          <p style="color:#a09a90;font-size:12px;">Status: {{ status }}</p>
+          <p style="color:#a09a90;font-size:12px;">Payment: {{ payment_method }}</p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ITEM</th>
+            <th>QUANTITY</th>
+            <th>PRICE</th>
+            <th style="text-align:right;">SUBTOTAL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.price }}</td>
+            <td style="text-align:right;">${{ item.subtotal }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div style="text-align:right;margin-top:20px;padding-top:20px;border-top:2px solid #1a1a1a;">
+        <p class="total">${{ total }}</p>
+        <p style="color:#666;font-size:10px;">All transactions in USD equivalent</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="color:#333;font-size:9px;margin:0;">
+        HellCorp Enterprise Solutions — All sales final. No refunds. No chargebacks.<br>
+        Escrow-verified transaction. Digital delivery within 24h of confirmation.<br>
+        Support: /support/ticket | PGP: 0xDEAD BEEF CAFE
+      </p>
+    </div>
+  </div>
+</body>
+</html>

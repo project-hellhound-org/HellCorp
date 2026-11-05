@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: hellcorp-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=hellcorp
+      - DB_PASS=h3llc0rp_db_p4ss
+      - DB_NAME=hellcorp
+      - MONGO_URL=mongodb://mongodb:27017/hellcorp
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=h3llc0rp_jwt_sup3r_s3cr3t_k3y_2024
+      - SESSION_SECRET=s3ss10n_s3cr3t_d0_n0t_l34k
+      - LDAP_URL=ldap://localhost:1389
+      - METADATA_URL=http://metadata:8169
+      - S3_ENDPOINT=http://s3:9000
+      - DEBUG_MODE=true
+      - VERBOSE_ERRORS=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+    networks:
+      - hellnet
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8
+    container_name: hellcorp-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: r00t_p4ss
+      MYSQL_DATABASE: hellcorp
+      MYSQL_USER: hellcorp
+      MYSQL_PASSWORD: h3llc0rp_db_p4ss
+    command: --secure-file-priv=""
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uhellcorp", "-ph3llc0rp_db_p4ss"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - hellnet
+
+  mongodb:
+    image: mongo:6
+    container_name: hellcorp-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - hellnet
+
+  redis:
+    image: redis:7-alpine
+    container_name: hellcorp-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - hellnet
+
+  nginx:
+    build: ./nginx
+    container_name: hellcorp-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+    networks:
+      - hellnet
+
+  mock-metadata:
+    build:
+      context: ./mock-services
+      dockerfile: Dockerfile.metadata
+    container_name: hellcorp-metadata
+    ports:
+      - "8169:8169"
+    networks:
+      hellnet:
+        aliases:
+          - metadata
+
+  mock-s3:
+    build:
+      context: ./mock-services
+      dockerfile: Dockerfile.s3
+    container_name: hellcorp-s3
+    ports:
+      - "9000:9000"
+    networks:
+      hellnet:
+        aliases:
+          - s3
+
+volumes:
+  mysql_data:
+  mongo_data:
+
+networks:
+  hellnet:
+    driver: bridge

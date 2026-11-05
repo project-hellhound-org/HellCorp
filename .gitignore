@@ -1,10 +1,13 @@
-# Dependencies
-node_modules/
-
 # Secrets
 .env
 .env.*
 !.env.example
+
+# Dependencies
+node_modules/
+
+# Exposed Git metadata
+.git-exposed/
 
 # Logs
 logs/
@@ -18,7 +21,7 @@ uploads/*
 *.sqlite
 *.sqlite3
 
-# Build files
+# Build artifacts
 dist/
 build/
 
