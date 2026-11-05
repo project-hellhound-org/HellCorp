@@ -1,5 +1,7 @@
 ![HellCorp Banner](./Image/Banner.png)
+
 <h1 align="center">HellCorp Global Enterprise (HGE)</h1>
+
 <p align="center">
   <img src="https://img.shields.io/badge/PROJECT-HELLCORP-c0392b?style=for-the-badge" />
   <img src="https://img.shields.io/badge/SECURITY-RESEARCH-black?style=for-the-badge" />
@@ -15,7 +17,7 @@
 
 ## 01. Project Overview
 
-**Hellcorp Global Enterprise (HGE)** is an intentionally vulnerable, enterprise-inspired web application designed to simulate the complexity of a modern corporate ERP ecosystem.
+**HellCorp Global Enterprise (HGE)** is an intentionally vulnerable, enterprise-inspired web application designed to simulate the complexity of a modern corporate ERP ecosystem.
 
 Unlike conventional CTF environments that focus on isolated vulnerabilities, HGE introduces interconnected business logic flaws, multi-layered attack surfaces, and realistic exploitation scenarios.
 
@@ -50,8 +52,8 @@ Deploy the complete HGE environment using Docker Compose.
 ### Step 1 — Clone Repository
 
 ```bash
-git clone https://github.com/Abinav3ac/Hell-Corp.git
-cd Hell-Corp
+git clone https://github.com/project-hellhound-org/HellCorp.git
+cd HellCorp
 ```
 
 ### Step 2 — Initialize Environment
@@ -308,6 +310,7 @@ The project authors assume no responsibility for unauthorized deployment, misuse
 <p align="center">
   <img src="https://img.shields.io/badge/Develop-ALPH4_X3-c0392b?style=for-the-badge" alt="Develop ALPH4_X3" />
 </p>
+
 <p align="center">
   <b>Built by Project Hellhound</b>
   <br/>
