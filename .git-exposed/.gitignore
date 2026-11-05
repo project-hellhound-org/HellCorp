@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# User uploads
+uploads/*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Build files
+dist/
+build/
+
+# OS files
+.DS_Store
